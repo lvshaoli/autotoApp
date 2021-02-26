@@ -175,7 +175,6 @@ function getNikes(name) {
 
     click("不去了");
     let bookList = className("android.widget.LinearLayout").find();
-    console.log("***********!!!!*****", bookList);
     if (bookList != null) {
       for (var i = 0; i < bookList.length; i++) {
         var linear = bookList[i];
@@ -212,7 +211,6 @@ function goDetail() {
     queryIsHello(currentClickName, (params) => {
       click("不去了");
       const { isHello, hasPhone } = params;
-      console.log(">>>>>>", isHello, hasPhone);
       if (isHello == 1 || hasPhone == 1) {
         clickcount++;
         if (namesArr.length <= clickcount) {
@@ -225,12 +223,6 @@ function goDetail() {
         }
       } else {
         try {
-          console.log(
-            "++++++++++++11+++++",
-            currentClickName,
-            isHello,
-            hasPhone
-          );
           toDetailSuccess = click(currentClickName);
           sleep(3000);
           // 进入详情了
@@ -305,26 +297,18 @@ function toTabMsg() {
   let lastListLen = msgUsersList.length;
   let preListLen = msgUsersList.length;
   while (true) {
-    console.log("^^^^^^^^^^^11", msgUsersList);
     // if (msgUsersList.length >= 10) {
     swipe(a / 2, (b / 3) * 2, a / 2, (b / 3) * 1, 3000);
     // }
-    console.log("^^^^^^^^^^^22", msgUsersList);
     preListLen = msgUsersList.length;
-    console.log("^^^^^^^^^^^33", preListLen);
     sleep(5000);
-    console.log("^^^^^^^^^^^44");
     click("不去了");
-    console.log("^^^^^^^^^^^55");
     // 回复消息页面消息
     let nicknames = className("android.widget.TextView").find();
     if (nicknames != null) {
-      console.log("^^^^^^^^^^^66");
       nicknames.forEach((nickTextView) => {
         if (nickTextView.id() == "me.yidui:id/nickname") {
           const userName = nickTextView.text();
-
-          console.log("----------------", userName);
           if (
             userName != "最近访客" &&
             userName != "附近的人" &&
@@ -339,7 +323,6 @@ function toTabMsg() {
       });
     }
     click("不去了");
-    log("----nickNames---", msgUsersList);
     lastListLen = msgUsersList.length;
     let flag = lastListLen == preListLen;
     if (flag) {
@@ -348,7 +331,6 @@ function toTabMsg() {
     sleep(3000);
   }
   msgUsersList = msgUsersList.reverse();
-  log("=============33333333333=======");
   if (msgUsersList.length) {
     saveUserToServe(msgUsersList.join(","), () => {
       msgSendMsg();
@@ -363,7 +345,7 @@ function toTabMsg() {
   }
 }
 
-var baseUrl = "http://8go.win:7300/v1/apidemo";
+var baseUrl = "服务器地址";
 // 保存用户到服务器端
 function saveUserToServe(nikeNames, callBack) {
   http.postJson(baseUrl + "/saveUsers", { nikeNames: nikeNames }, {}, (res) => {
@@ -446,14 +428,11 @@ function msgSendMsg() {
       return;
     }
     sleep(3000);
-    console.log("--11---", msgUsersList);
     const currentUser = msgUsersList[msgCount];
-    console.log("--222---", currentUser);
     if (!currentUser) {
       return;
     }
     queryIsHello(currentUser, (params) => {
-      console.log("******33*****", params);
       const { isHello, hasPhone } = params;
       if (hasPhone == 1) {
         // longclickdel(currentUser);
@@ -483,7 +462,7 @@ function msgSendMsg() {
               id("input_edit_text")
                 .findOne()
                 .setText(
-                  "我经常有事回复不及时，如果有兴趣了解，互留电，18983753027，你的多少"
+                  "我经常有事回复不及时，如果有兴趣了解，互留电，你的多少"
                 );
 
               sleep(2000);
@@ -513,7 +492,6 @@ function capturePic(currentUser) {
   // if (!requestScreenCapture()) {
   //   toast("请求截图失败");
   //   // exit();
-  // console.log('^^^^^^^^^^^^^^失败了');
   // }
   // toast('---截图开始---');
   // //截图并保存到存储卡目录
@@ -545,9 +523,8 @@ function getPhoneNum(callback) {
                         child4 &&
                           child4.children().forEach((child5) => {
                             if (child5.id() == 'msg_item_audio_new') {
-                              console.log('*******有语音***')
+                              console.log('有语音')
                             }
-                            log("!!!!!!!!!1111!!!!!", child5.text());
                             phoneno = selectPhoneNumber(child5.text());
                           });
                       }
@@ -577,7 +554,6 @@ function downLan() {
   sleep(2000);
   // var a = device.width;
   // var b = device.height;
-  log("*******", a / 2, (b / 3) * 1, a / 2, (b / 3) * 2);
   scrollBackward();
 }
 
@@ -623,7 +599,6 @@ function cancelAttention() {
     }
   }
   cancelAttArr = cancelAttArr.reverse();
-  log("=============33333333333=======");
   if (cancelAttArr.length) {
     toCancel();
   } else {
@@ -645,9 +620,7 @@ function toCancel() {
     }
     sleep(3000);
     click('不去了');
-    console.log("--11---", cancelAttArr);
     const currentUser = cancelAttArr[msgCount];
-    console.log("--222---", currentUser);
     if (!currentUser) {
       return;
     }
@@ -655,7 +628,6 @@ function toCancel() {
     const clicksuccess = click(currentUser);
     click('不去了');
     if (clicksuccess) {
-      console.log('**********8');
       sleep(5000);
       
       if(text("发消息").exists()){
